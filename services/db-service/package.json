@@ -10,7 +10,7 @@
     "migrate": "knex migrate:latest",
     "migrate:make": "knex migrate:make",
     "migrate:rollback": "knex migrate:rollback",
-    "test": "jest"
+    "test": "jest --config jest.config.js"
   },
   "dependencies": {
     "better-sqlite3": "^8.x.x",

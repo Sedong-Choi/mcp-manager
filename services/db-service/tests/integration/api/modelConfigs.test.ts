@@ -1,12 +1,13 @@
 import supertest from 'supertest';
-import app from '../../../src/app';
-import db from '../../../src/config/database';
+import { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
+import { ModelConfig } from '../../../src/models/interfaces';
 
-const request = supertest(app);
+// 실제 앱 임포트 전에 DB를 모킹해야 합니다
+let db: Knex;
 
-// Use an in-memory SQLite database for testing
-jest.mock('../../../src/config/database', () => {
+// 모킹을 위한 함수
+function setupTestDB(): Knex {
   const knex = require('knex');
   return knex({
     client: 'sqlite3',
@@ -15,7 +16,17 @@ jest.mock('../../../src/config/database', () => {
     },
     useNullAsDefault: true
   });
+}
+
+// 테스트를 위한 데이터베이스 모킹
+jest.mock('../../../src/config/database', () => {
+  db = setupTestDB();
+  return db;
 });
+
+// 앱이 DB 모킹 이후에 임포트되어야 합니다
+import app from '../../../src/app';
+const request = supertest(app);
 
 describe('Model Config API', () => {
   beforeAll(async () => {
@@ -50,7 +61,7 @@ describe('Model Config API', () => {
     
     it('should return all model configs', async () => {
       // Insert test data
-      const modelConfig = {
+      const modelConfig: Partial<ModelConfig> = {
         id: uuidv4(),
         model_name: 'test-model',
         api_port: 11434,
