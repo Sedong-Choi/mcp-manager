@@ -61,7 +61,7 @@ export class ModelConfigRepository {
   }
 
   async delete(id: string): Promise<boolean> {
-    const deleted = await db(this.tableName).where({ id }).delete();
+    const deleted = await db(this.tableName).where({ id }).del();
     return deleted > 0;
   }
 }

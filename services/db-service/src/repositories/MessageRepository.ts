@@ -6,10 +6,14 @@ export class MessageRepository {
   private tableName = 'messages';
 
   async findByConversationId(conversationId: string): Promise<Message[]> {
-    return db(this.tableName)
+    const results = await db(this.tableName)
       .where({ conversation_id: conversationId })
-      .select('*')
-      .orderBy('created_at', 'asc');
+      .select('*');
+    
+    // Sort in JavaScript instead of SQL
+    return results.sort((a, b) => 
+      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
   }
 
   async findById(id: string): Promise<Message | undefined> {
