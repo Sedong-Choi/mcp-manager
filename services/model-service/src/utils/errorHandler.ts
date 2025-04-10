@@ -1,45 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
 
-interface ApiError extends Error {
-  status?: number;
-}
+// 비동기 핸들러 래퍼
+export const asyncHandler = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
+  Promise.resolve(fn(req, res, next)).catch(next);
+};
 
-// Global error handler middleware for Express
-export const errorMiddleware = (
-  err: ApiError, 
-  req: Request, 
-  res: Response, 
-  next: NextFunction
-): void => {
+// 표준 API 응답 포맷팅
+export const apiResponse = (res: Response, data: any, statusCode = 200) => {
+  return res.status(statusCode).json({
+    success: statusCode >= 200 && statusCode < 300,
+    data
+  });
+};
+
+// 글로벌 에러 처리 미들웨어
+export const errorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.status || 500;
   const message = err.message || 'Internal Server Error';
   
-  console.error(`[Error] ${statusCode} - ${message}`);
-  if (err.stack) {
-    console.error(err.stack);
-  }
+  console.error(`[Error] ${message}`, err);
   
-  res.status(statusCode).json({
-    status: 'error',
-    message,
-  });
-};
-
-// Standard API response format
-export const apiResponse = <T>(
-  res: Response, 
-  data: T, 
-  statusCode: number = 200
-): Response => {
-  return res.status(statusCode).json({
-    status: 'success',
-    data,
-  });
-};
-
-// Async handler to simplify try-catch in route handlers
-export const asyncHandler = (fn: Function) => {
-  return (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    return Promise.resolve(fn(req, res, next)).catch(next);
-  };
+  return apiResponse(
+    res, 
+    { 
+      error: message,
+      status: 'error',
+      path: req.path 
+    }, 
+    statusCode
+  );
 };

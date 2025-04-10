@@ -1,26 +1,37 @@
-import express from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
-import { errorMiddleware } from './utils/errorHandler';
-import healthRoutes from './routes/healthRoute';
+import healthRoute from '@/routes/healthRoute';
+import { errorMiddleware } from '@/utils/errorHandler';
 
-const app = express();
+export function createApp(): Express {
+  const app = express();
 
-// Apply middleware
-app.use(cors());
-app.use(express.json());
-
-// Apply routes
-app.use('/health', healthRoutes);
-
-// Error handling
-app.use(errorMiddleware);
-
-// Catch-all route for undefined endpoints
-app.use('*', (req, res) => {
-  res.status(404).json({
-    status: 'error',
-    message: `Cannot ${req.method} ${req.originalUrl}`
+  // 미들웨어 설정
+  app.use(cors());
+  app.use(express.json());
+  
+  // 요청 로깅
+  app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+    next();
   });
-});
 
-export default app;
+  // 라우트 설정
+  app.use('/health', healthRoute);
+  
+  // 기본 404 핸들러
+  app.use((req, res) => {
+    res.status(404).json({ 
+      success: false,
+      data: {
+        error: 'Not Found',
+        path: req.path
+      }
+    });
+  });
+
+  // 글로벌 에러 핸들러
+  app.use(errorMiddleware);
+
+  return app;
+}

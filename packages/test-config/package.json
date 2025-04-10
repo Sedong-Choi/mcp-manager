@@ -16,7 +16,8 @@
   "dependencies": {
     "@types/jest": "^29.x.x",
     "@types/node": "^18.x.x",
-    "jest-environment-node": "^29.x.x"
+    "jest-environment-node": "^29.x.x",
+    "@mcp/tsconfig": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.x.x"

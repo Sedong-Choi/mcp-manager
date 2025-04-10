@@ -19,7 +19,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "types": ["jest", "node"],
+    "types": ["jest"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

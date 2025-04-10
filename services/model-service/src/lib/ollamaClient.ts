@@ -50,7 +50,7 @@ class OllamaClient {
       statusCode = 503; // Service Unavailable
     } else {
       // Something happened in setting up the request
-      errorMessage = error.message;
+      errorMessage = error.message || 'Unknown error';
     }
     
     const enhancedError = new Error(`Ollama API Error: ${errorMessage}`);

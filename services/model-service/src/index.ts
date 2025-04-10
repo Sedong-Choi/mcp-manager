@@ -1,42 +1,24 @@
-import express, { Request, Response } from 'express';
-import cors from 'cors';
 import dotenv from 'dotenv';
+import { createApp } from '@/app';
 
+// 환경 변수 로드
 dotenv.config();
 
-const app = express();
-const port = process.env.PORT || 4001;
+const PORT = process.env.PORT || 4001;
 
-// Define interfaces for type safety
-interface ModelResponse {
-  models: Model[];
+async function startServer() {
+  try {
+    const app = createApp();
+
+    app.listen(PORT, () => {
+      console.log(`✅ Model service running on port ${PORT}`);
+      console.log(`🔗 Connected to Ollama API at ${process.env.OLLAMA_API_URL || 'http://localhost:11434'}`);
+      console.log(`💡 Health check available at http://localhost:${PORT}/health`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start model service:', error);
+    process.exit(1);
+  }
 }
 
-interface Model {
-  name: string;
-  status: 'running' | 'stopped';
-}
-
-interface HealthResponse {
-  status: string;
-}
-
-app.use(cors());
-app.use(express.json());
-
-app.get('/health', (req: Request, res: Response<HealthResponse>) => {
-  res.json({ status: 'ok' });
-});
-
-app.get('/models', (req: Request, res: Response<ModelResponse>) => {
-  res.json({
-    models: [
-      { name: 'gemma-2b', status: 'stopped' },
-      { name: 'llama2', status: 'stopped' }
-    ]
-  });
-});
-
-app.listen(port, () => {
-  console.log(`Model service running on port ${port}`);
-});
+startServer();

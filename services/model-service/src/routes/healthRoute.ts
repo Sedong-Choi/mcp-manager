@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import OllamaClient from '../lib/ollamaClient';
-import { apiResponse, asyncHandler } from '../utils/errorHandler';
+import { type Router as ExpressRouter, Router } from 'express';
+import OllamaClient from '@/lib/ollamaClient';
+import { apiResponse, asyncHandler } from '@/utils/errorHandler';
 
-const router = Router();
+const router: ExpressRouter = Router();
 const ollamaClient = new OllamaClient();
 
 // Server health check endpoint

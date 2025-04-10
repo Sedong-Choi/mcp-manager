@@ -2,17 +2,16 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import OllamaClient from '@/lib/ollamaClient';
 import { ListModelsResponse, ModelInfoResponse } from '@/types/ollama';
 
-// Mock axios 타입 정의
-type MockAxiosInstance = {
+// axios mock 타입 명확하게 정의
+interface MockAxiosInstance {
   get: jest.Mock;
   interceptors: {
     response: {
       use: jest.Mock;
     };
   };
-};
+}
 
-// Mock axios
 jest.mock('axios', () => {
   return {
     create: jest.fn().mockReturnValue({
@@ -33,7 +32,8 @@ describe('OllamaClient', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     client = new OllamaClient();
-    mockAxios = (axios.create as jest.MockedFunction<typeof axios.create>)();
+    // 타입 캐스팅 명확히 처리
+    mockAxios = (axios.create as jest.MockedFunction<typeof axios.create>)() as unknown as MockAxiosInstance;
   });
 
   describe('checkHealth', () => {
