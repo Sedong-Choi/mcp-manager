@@ -4,6 +4,7 @@ services:
   web:
     build:
       context: ./apps/web
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -17,16 +18,18 @@ services:
   model-service:
     build:
       context: ./services/model-service
+      dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - "4001:4001"
     environment:
       - NODE_ENV=production
 
   mcp-service:
     build:
       context: ./services/mcp-service
+      dockerfile: Dockerfile
     ports:
-      - "3002:3002"
+      - "4002:4002"
     environment:
       - NODE_ENV=production
     depends_on:
@@ -35,8 +38,9 @@ services:
   conversation-service:
     build:
       context: ./services/conversation-service
+      dockerfile: Dockerfile
     ports:
-      - "3003:3003"
+      - "4003:4003"
     environment:
       - NODE_ENV=production
     depends_on:
@@ -45,8 +49,9 @@ services:
   db-service:
     build:
       context: ./services/db-service
+      dockerfile: Dockerfile
     ports:
-      - "3004:3004"
+      - "4004:4004"
     environment:
       - NODE_ENV=production
     volumes:
