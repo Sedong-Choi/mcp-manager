@@ -1,55 +1,62 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import Database from 'better-sqlite3';
+import db from './config/db';
 import path from 'path';
-import fs from 'fs';
 
+// 라우터 임포트
+import conversationsRouter from './routes/conversations';
+import messagesRouter from './routes/messages';
+import modelConfigsRouter from './routes/modelConfigs';
+import mcpServersRouter from './routes/mcpServers';
+
+// 환경변수 설정 로드
 dotenv.config();
 
+// Express 앱 초기화
 const app = express();
-const port = process.env.PORT || 4004;
+const PORT = process.env.PORT || 3000;
 
+// 미들웨어 설정
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// 데이터베이스 초기화
-const dbDir = path.resolve(__dirname, '../data');
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir, { recursive: true });
+// 마이그레이션 실행
+const runMigrations = async () => {
+  try {
+    // __dirname이 dist 폴더를 가리키므로 migrations 경로를 정확히 지정
+    await db.migrate.latest({
+      directory: path.join(__dirname, 'migrations')
+    });
+    console.log('Migrations completed successfully');
+  } catch (error) {
+    console.error('Migration failed:', error);
+    process.exit(1);
+  }
 }
 
-const dbPath = path.join(dbDir, 'mcp-manager.db');
-const db = new Database(dbPath);
+// 기본 라우트
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to MCP Manager Pro DB Service API' });
+});
 
-// 기본 테이블 스키마 정의
-db.exec(`
-  CREATE TABLE IF NOT EXISTS conversations (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  );
+// 라우터 설정
+app.use('/conversations', conversationsRouter);
+app.use('/', messagesRouter); // message routes include the conversation id in the path
+app.use('/model-configs', modelConfigsRouter);
+app.use('/mcp-servers', mcpServersRouter);
+
+// 서버 시작
+const startServer = async () => {
+  await runMigrations();
   
-  CREATE TABLE IF NOT EXISTS messages (
-    id TEXT PRIMARY KEY,
-    conversation_id TEXT NOT NULL,
-    role TEXT NOT NULL,
-    content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (conversation_id) REFERENCES conversations(id)
-  );
-`);
+  app.listen(PORT, () => {
+    console.log(`DB Service running on http://localhost:${PORT}`);
+  });
+}
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
-
-app.get('/tables', (req, res) => {
-  const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table';").all();
-  res.json({ tables });
-});
-
-app.listen(port, () => {
-  console.log(`Database service running on port ${port}`);
+startServer().catch(error => {
+  console.error('Failed to start server:', error);
+  process.exit(1);
 });

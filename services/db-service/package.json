@@ -1,31 +1,35 @@
 {
-  "name": "@mcp/db-service",
-  "version": "0.1.0",
-  "private": true,
+  "name": "db-service",
+  "version": "1.0.0",
+  "description": "Database service for MCP Manager Pro",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn src/index.ts",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.json",
     "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "migrate": "knex migrate:latest",
+    "migrate:make": "knex migrate:make",
+    "migrate:rollback": "knex migrate:rollback",
     "test": "jest"
   },
   "dependencies": {
-    "better-sqlite3": "^8.7.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "knex": "^3.1.0"
+    "better-sqlite3": "^8.x.x",
+    "knex": "^2.x.x",
+    "dotenv": "^16.x.x",
+    "express": "^4.x.x",
+    "cors": "^2.x.x",
+    "uuid": "^9.x.x"
   },
   "devDependencies": {
     "@mcp/tsconfig": "workspace:*",
-    "@types/better-sqlite3": "^7.6.13",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/jest": "^29.5.3",
-    "@types/node": "^18.17.0",
-    "jest": "^29.6.1",
-    "ts-jest": "^29.1.1",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.1.6"
+    "@types/better-sqlite3": "^7.x.x",
+    "@types/express": "^4.x.x",
+    "@types/cors": "^2.x.x",
+    "@types/uuid": "^9.x.x",
+    "typescript": "^5.x.x",
+    "ts-node": "^10.x.x",
+    "jest": "^29.x.x",
+    "@types/jest": "^29.x.x",
+    "ts-jest": "^29.x.x"
   }
 }
