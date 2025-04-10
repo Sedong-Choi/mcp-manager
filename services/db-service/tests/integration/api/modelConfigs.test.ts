@@ -52,7 +52,7 @@ const mockDB = {
 };
 
 // Mock database
-jest.mock('@//config/database', () => {
+jest.mock('@/database', () => {
   return jest.fn().mockImplementation(() => mockDB);
 });
 

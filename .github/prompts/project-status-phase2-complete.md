@@ -78,8 +78,6 @@
 ```
 services/db-service/
 ├── src/
-│   ├── config/
-│   │   └── database.ts           # 데이터베이스 설정
 │   ├── controllers/              # API 컨트롤러
 │   │   ├── conversationController.ts
 │   │   ├── messageController.ts
@@ -107,11 +105,13 @@ services/db-service/
 │   │   └── index.ts
 │   ├── middleware/               # 미들웨어
 │   │   └── errorMiddleware.ts
+│   ├── database.ts               # 데이터베이스 연결 설정
 │   ├── app.ts                    # Express 앱 설정
 │   └── index.ts                  # 진입점
 ├── tests/                        # 테스트 파일
 │   ├── unit/                     # 단위 테스트
 │   └── integration/              # 통합 테스트
+├── knexfile.ts                   # Knex 구성
 ├── .env.example                  # 환경변수 예시
 ├── Dockerfile                    # 프로덕션 도커 설정
 ├── Dockerfile.dev                # 개발용 도커 설정

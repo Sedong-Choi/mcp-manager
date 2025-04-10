@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import db from '@/config/database';
+import db from '@/database';
 
 interface MigrationRecord {
   id: number;

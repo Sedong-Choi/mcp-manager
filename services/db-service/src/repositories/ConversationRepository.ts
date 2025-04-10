@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import db from '@/config/database';
+import db from '@/database';
 import { Conversation } from '@/models/interfaces';
 
 export class ConversationRepository {

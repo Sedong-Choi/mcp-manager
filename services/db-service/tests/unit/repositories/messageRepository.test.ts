@@ -2,7 +2,7 @@ import { MessageRepository } from '@//repositories/messageRepository';
 import { Message } from '@//models/interfaces';
 
 // Mock the database
-jest.mock('@//config/database', () => {
+jest.mock('@/database', () => {
   return {
     __esModule: true,
     default: jest.fn().mockReturnValue({
@@ -18,7 +18,7 @@ jest.mock('@//config/database', () => {
 });
 
 // Import the mocked database
-import db from '@//config/database';
+import db from '@/database';
 
 // Mock UUID generation
 jest.mock('uuid', () => ({
