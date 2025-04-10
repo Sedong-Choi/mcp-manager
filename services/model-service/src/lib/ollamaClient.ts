@@ -4,13 +4,13 @@ import {
   OLLAMA_API_TIMEOUT, 
   OLLAMA_API_RETRY_COUNT,
   OLLAMA_API_RETRY_DELAY
-} from '../config/api';
+} from '@/config/api';
 import { 
   ListModelsResponse, 
   ModelInfoResponse, 
   OllamaErrorResponse,
   HealthResponse
-} from '../types/ollama';
+} from '@/types/ollama';
 
 class OllamaClient {
   private client: AxiosInstance;

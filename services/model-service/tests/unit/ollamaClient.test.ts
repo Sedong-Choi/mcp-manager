@@ -1,5 +1,16 @@
-import axios from 'axios';
-import OllamaClient from '../../src/lib/ollamaClient';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import OllamaClient from '@/lib/ollamaClient';
+import { ListModelsResponse, ModelInfoResponse } from '@/types/ollama';
+
+// Mock axios 타입 정의
+type MockAxiosInstance = {
+  get: jest.Mock;
+  interceptors: {
+    response: {
+      use: jest.Mock;
+    };
+  };
+};
 
 // Mock axios
 jest.mock('axios', () => {
@@ -17,17 +28,17 @@ jest.mock('axios', () => {
 
 describe('OllamaClient', () => {
   let client: OllamaClient;
-  let mockAxios: any;
+  let mockAxios: MockAxiosInstance;
 
   beforeEach(() => {
     jest.clearAllMocks();
     client = new OllamaClient();
-    mockAxios = (axios.create as jest.Mock)();
+    mockAxios = (axios.create as jest.MockedFunction<typeof axios.create>)();
   });
 
   describe('checkHealth', () => {
     it('should return ok status when API is available', async () => {
-      mockAxios.get.mockResolvedValueOnce({ data: { models: [] } });
+      mockAxios.get.mockResolvedValueOnce({ data: { models: [] } } as AxiosResponse);
       
       const result = await client.checkHealth();
       
@@ -55,7 +66,7 @@ describe('OllamaClient', () => {
           ] 
         } 
       };
-      mockAxios.get.mockResolvedValueOnce(mockResponse);
+      mockAxios.get.mockResolvedValueOnce(mockResponse as AxiosResponse);
       
       const result = await client.listModels();
       
@@ -81,7 +92,7 @@ describe('OllamaClient', () => {
           }
         } 
       };
-      mockAxios.get.mockResolvedValueOnce(mockResponse);
+      mockAxios.get.mockResolvedValueOnce(mockResponse as AxiosResponse);
       
       const result = await client.getModelInfo(modelName);
       
