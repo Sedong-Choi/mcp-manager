@@ -1,0 +1,18 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+
+# Install dependencies
+RUN npm install -g pnpm && pnpm install
+
+# The rest of the code is mounted as a volume in docker-compose.dev.yml
+
+# Expose port 3000
+EXPOSE 3000
+
+# Start the Next.js development server
+CMD ["pnpm", "dev"]
