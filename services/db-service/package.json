@@ -1,5 +1,5 @@
 {
-  "name": "db-service",
+  "name": "@mcp/db-service",
   "version": "1.0.0",
   "description": "Database service for MCP Manager Pro",
   "main": "dist/index.js",
@@ -30,6 +30,8 @@
     "ts-node": "^10.x.x",
     "jest": "^29.x.x",
     "@types/jest": "^29.x.x",
-    "ts-jest": "^29.x.x"
+    "ts-jest": "^29.x.x",
+    "supertest": "^6.x.x",
+    "@types/supertest": "^2.x.x"
   }
 }

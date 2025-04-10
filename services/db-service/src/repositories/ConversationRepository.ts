@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import db from '../config/db';
+import db from '../config/database';
 import { Conversation } from '../models/interfaces';
 
 export class ConversationRepository {
@@ -28,21 +28,18 @@ export class ConversationRepository {
     return newConversation;
   }
 
-  async update(id: string, data: Partial<Omit<Conversation, 'id' | 'created_at' | 'updated_at'>>): Promise<Conversation | undefined> {
-    const updated_at = new Date().toISOString();
+  async update(id: string, data: Partial<Omit<Conversation, 'id' | 'created_at'>>): Promise<Conversation | undefined> {
+    const updateData: any = {
+      ...data,
+      updated_at: new Date().toISOString()
+    };
     
-    await db(this.tableName)
-      .where({ id })
-      .update({
-        ...data,
-        updated_at
-      });
-      
+    await db(this.tableName).where({ id }).update(updateData);
     return this.findById(id);
   }
 
   async delete(id: string): Promise<boolean> {
-    const deleted = await db(this.tableName).where({ id }).delete();
+    const deleted = await db(this.tableName).where({ id }).del();
     return deleted > 0;
   }
 }

@@ -1,5 +1,5 @@
 import express from 'express';
-import McpServerRepository from '../repositories/McpServerRepository';
+import McpServerRepository from '../repositories/mcpServerRepository';
 
 const router: express.Router = express.Router();
 

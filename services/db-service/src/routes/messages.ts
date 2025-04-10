@@ -1,6 +1,6 @@
 import express from 'express';
-import MessageRepository from '../repositories/MessageRepository';
-import ConversationRepository from '../repositories/ConversationRepository';
+import MessageRepository from '../repositories/messageRepository';
+import ConversationRepository from '../repositories/conversationRepository';
 
 const router: express.Router = express.Router();
 
@@ -66,7 +66,7 @@ router.put('/messages/:id', async (req, res) => {
       return res.status(400).json({ error: 'Content is required' });
     }
     
-    const updatedMessage = await MessageRepository.update(id, content);
+    const updatedMessage = await MessageRepository.update(id, { content });
     
     if (!updatedMessage) {
       return res.status(404).json({ error: 'Message not found' });

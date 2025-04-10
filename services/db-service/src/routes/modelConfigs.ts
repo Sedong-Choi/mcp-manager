@@ -1,5 +1,5 @@
 import express from 'express';
-import ModelConfigRepository from '../repositories/ModelConfigRepository';
+import ModelConfigRepository from '../repositories/modelConfigRepository';
 
 const router: express.Router = express.Router();
 

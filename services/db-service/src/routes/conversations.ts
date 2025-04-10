@@ -1,5 +1,5 @@
 import express from 'express';
-import ConversationRepository from '../repositories/ConversationRepository';
+import ConversationRepository from '../repositories/conversationRepository';
 
 const router: express.Router = express.Router();
 
