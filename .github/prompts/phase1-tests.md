@@ -55,6 +55,8 @@ curl http://localhost:3000/api/models
 
 ## 6. Docker 설정 검증
 
+현재 Dockerfile 생성안되어 있음
+
 ```bash
 # Docker Compose 설정 확인
 cat docker-compose.yml

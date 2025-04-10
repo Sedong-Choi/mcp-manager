@@ -70,6 +70,7 @@ cd ../..
    - main.ts 및 preview.ts 파일 생성
 
 ## 마이크로서비스 아키텍처 구조
+
 ```
 mcp-manager-pro/
 ├── apps/

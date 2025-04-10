@@ -42,10 +42,9 @@
 mcp-manager-pro/
 ├── apps/
 │   └── web/                      # Next.js 웹 애플리케이션
-│       ├── src/
-│       │   ├── app/
-│       │   │   ├── api/          # API 게이트웨이
-│       │   │   └── page.tsx      # 메인 페이지
+│       ├── app/
+│       │   ├── api/          # API 게이트웨이
+│       │   └── page.tsx      # 메인 페이지
 │       │   └── ...
 │       ├── .storybook/           # Storybook 설정
 │       └── package.json
