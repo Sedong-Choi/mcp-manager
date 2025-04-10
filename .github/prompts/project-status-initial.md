@@ -5,6 +5,7 @@
 - 프로젝트 기본 설정 단계
 - 기본 README.md 파일 존재
 - MIT 라이센스 적용됨
+- 모노레포 구조로 변경 예정 (pnpm workspaces 사용)
 
 ## 구현 예정 계획
 
@@ -12,10 +13,12 @@ MCP Manager Pro는 아래 문서에 정의된 계획에 따라 구현될 예정�
 
 - 기본 프로젝트 구조: `.github/prompts/mcp-manager-readme-md.md` 참조
 - 단계별 구현 계획: `.github/prompts/mcp-manager-project-sequence.md` 참조
+- 모노레포 구조로 마이크로서비스 통합 관리
 
 ## 다음 구현 단계
 
 1. 프로젝트 기초 설정 및 개발 환경 구성
+   - pnpm workspaces 설정으로 모노레포 구성
    - Next.js 앱 생성 (App Router, TypeScript, TailwindCSS)
    - 기본 디렉토리 구조 셋업
    - ESLint, Prettier 설정

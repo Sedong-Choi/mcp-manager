@@ -4,23 +4,29 @@ MCP Manager Pro 프로젝트를 체계적으로 구현하기 위한 세분화된
 
 ## 1단계: 프로젝트 기초 설정 및 개발 환경 구성
 
-### 1.1. 기본 Next.js 프로젝트 생성
+### 1.1. 모노레포 프로젝트 구성
 
-- Next.js 앱 생성 (App Router, TypeScript, TailwindCSS 설정)
-- 기본 디렉토리 구조 셋업
-- ESLint, Prettier 설정
+- pnpm workspaces를 활용한 모노레포 구조 설정
+- 기본 디렉토리 구조 셋업 (apps, packages, services)
+- 공통 설정 파일 생성 (tsconfig, eslint, prettier)
 
-### 1.2. 마이크로서비스 기본 구조 설계
+### 1.2. Next.js 앱 생성
 
-- 서비스별 디렉토리 구조 생성
-- Docker 기본 설정 파일 작성
+- apps/web에 Next.js 앱 생성 (App Router, TypeScript, TailwindCSS 설정)
+- 기본 레이아웃 및 페이지 구조 설계
+- API 게이트웨이 기본 구조 설정
+
+### 1.3. 마이크로서비스 기본 구조 설계
+
+- 서비스별 독립 패키지 구성 (model-service, mcp-service 등)
 - 서비스 간 통신 방식 설계
+- 공통 타입 및 유틸리티 패키지 구성
 
-### 1.3. 개발 환경 및 도구 설정
+### 1.4. 개발 환경 및 도구 설정
 
 - Storybook 초기 설정
 - Jest 테스트 환경 구성
-- 개발용 Docker Compose 작성
+- Docker 및 Docker Compose 설정
 
 ## 2단계: 데이터베이스 서비스 구현
 
