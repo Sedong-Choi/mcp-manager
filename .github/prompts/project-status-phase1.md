@@ -44,34 +44,32 @@ cd ../..
 1. 위의 CLI 명령어 실행 후 "진행" 메시지를 입력하십시오.
 2. CLI 명령어 실행 결과에 문제가 있을 경우 알려주시면 해결 방법을 안내해 드리겠습니다.
 
-## AI 구현 작업 (사용자 "진행" 입력 후)
-
-AI가 다음 작업을 수행합니다:
+## 구현 완료된 작업
 
 1. **모노레포 설정**
    - pnpm-workspace.yaml 파일 생성
    - 루트 package.json 구성
-   - 공통 TypeScript 설정 생성
+   - 공통 TypeScript 설정 생성 (base.json, nextjs.json, service.json)
 
 2. **마이크로서비스 기본 구조 설정**
-   - 각 서비스의 기본 package.json 생성
+   - 각 서비스의 기본 package.json 생성 (model-service, mcp-service, conversation-service, db-service)
    - TypeScript 설정 및 기본 소스 파일 생성
-   - 기본 API 엔드포인트 구성
+   - 기본 API 엔드포인트 구성 (health 체크, 목록 조회 기능)
 
 3. **Docker 설정**
-   - 각 서비스의 Dockerfile 생성
+   - 각 서비스의 Dockerfile 및 Dockerfile.dev 생성
    - 루트 docker-compose.yml 파일 생성
    - 개발용 docker-compose.dev.yml 파일 생성
 
 4. **Next.js 앱 기본 설정**
-   - 공통 컴포넌트 디렉토리 구조 설정
-   - API 라우트 기본 구조 구성
+   - package.json 수정 (패키지명 및 의존성 업데이트)
+   - API 라우트 기본 구조 구성 (/api/health, /api/models)
    - 환경 변수 설정 (.env.example)
 
 5. **Storybook 기본 설정**
+   - main.ts 및 preview.ts 파일 생성
 
 ## 마이크로서비스 아키텍처 구조
-
 ```
 mcp-manager-pro/
 ├── apps/

@@ -1,13 +1,26 @@
 {
   "name": "mcp-manager-pro",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP Manager Pro - 로컬 AI 모델과 MCP 서버 통합 관리 시스템",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm --filter=\"*\" run build",
+    "dev": "pnpm --filter=\"@mcp/web\" run dev",
+    "lint": "pnpm --filter=\"*\" run lint",
+    "test": "pnpm --filter=\"*\" run test",
+    "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules dist .next"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.4.1"
+  "keywords": [
+    "mcp",
+    "ai",
+    "model",
+    "management"
+  ],
+  "author": "Sedong-Choi",
+  "license": "MIT",
+  "packageManager": "pnpm@10.4.1",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
 }

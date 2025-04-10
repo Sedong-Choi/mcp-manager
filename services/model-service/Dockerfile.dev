@@ -1,0 +1,12 @@
+FROM node:18-alpine
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/tsconfig packages/tsconfig/
+COPY services/model-service ./
+
+RUN npm install -g pnpm
+RUN pnpm install
+
+EXPOSE 4001
+CMD ["pnpm", "dev"]

@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MODEL_SERVICE_URL=http://model-service:4001
+      - MCP_SERVICE_URL=http://mcp-service:4002
+      - CONVERSATION_SERVICE_URL=http://conversation-service:4003
+      - DB_SERVICE_URL=http://db-service:4004
+    depends_on:
+      - model-service
+      - mcp-service
+      - conversation-service
+      - db-service
+
+  model-service:
+    build:
+      context: .
+      dockerfile: ./services/model-service/Dockerfile
+    ports:
+      - "4001:4001"
+    environment:
+      - PORT=4001
+      - NODE_ENV=production
+    volumes:
+      - ./data/model-service:/app/data
+
+  mcp-service:
+    build:
+      context: .
+      dockerfile: ./services/mcp-service/Dockerfile
+    ports:
+      - "4002:4002"
+    environment:
+      - PORT=4002
+      - NODE_ENV=production
+    volumes:
+      - ./data/mcp-service:/app/data
+
+  conversation-service:
+    build:
+      context: .
+      dockerfile: ./services/conversation-service/Dockerfile
+    ports:
+      - "4003:4003"
+    environment:
+      - PORT=4003
+      - NODE_ENV=production
+    depends_on:
+      - db-service
+
+  db-service:
+    build:
+      context: .
+      dockerfile: ./services/db-service/Dockerfile
+    ports:
+      - "4004:4004"
+    environment:
+      - PORT=4004
+      - NODE_ENV=production
+    volumes:
+      - ./data/db:/app/data/db

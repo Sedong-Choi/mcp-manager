@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  model-service:
+    build:
+      context: .
+      dockerfile: ./services/model-service/Dockerfile.dev
+    ports:
+      - "4001:4001"
+    environment:
+      - PORT=4001
+      - NODE_ENV=development
+    volumes:
+      - ./services/model-service:/app
+      - /app/node_modules
+    command: pnpm dev
+
+  mcp-service:
+    build:
+      context: .
+      dockerfile: ./services/mcp-service/Dockerfile.dev
+    ports:
+      - "4002:4002"
+    environment:
+      - PORT=4002
+      - NODE_ENV=development
+    volumes:
+      - ./services/mcp-service:/app
+      - /app/node_modules
+    command: pnpm dev
+
+  conversation-service:
+    build:
+      context: .
+      dockerfile: ./services/conversation-service/Dockerfile.dev
+    ports:
+      - "4003:4003"
+    environment:
+      - PORT=4003
+      - NODE_ENV=development
+    volumes:
+      - ./services/conversation-service:/app
+      - /app/node_modules
+    command: pnpm dev
+    depends_on:
+      - db-service
+
+  db-service:
+    build:
+      context: .
+      dockerfile: ./services/db-service/Dockerfile.dev
+    ports:
+      - "4004:4004"
+    environment:
+      - PORT=4004
+      - NODE_ENV=development
+    volumes:
+      - ./services/db-service:/app
+      - ./data/db:/app/data/db
+      - /app/node_modules
+    command: pnpm dev
