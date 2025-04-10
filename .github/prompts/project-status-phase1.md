@@ -71,3 +71,23 @@ AI가 다음 작업을 수행합니다:
 5. **Storybook 기본 설정**
 
 ## 마이크로서비스 아키텍처 구조
+
+```
+mcp-manager-pro/
+├── apps/
+│   └── web/               # Next.js 웹 애플리케이션 (API 게이트웨이 + 클라이언트)
+├── packages/
+│   ├── tsconfig/          # 공유 TypeScript 설정
+│   └── ui/                # 공유 UI 컴포넌트
+├── services/
+│   ├── model-service/     # 모델 관리 마이크로서비스
+│   ├── mcp-service/       # MCP 서버 관리 마이크로서비스
+│   ├── conversation-service/ # 대화 관리 마이크로서비스
+│   └── db-service/        # 데이터베이스 마이크로서비스
+├── pnpm-workspace.yaml    # 워크스페이스 구성
+└── package.json           # 루트 package.json
+```
+
+---
+
+마지막 업데이트: 2024-04-21 16:44:41
