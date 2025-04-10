@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import MessageRepository from '../repositories/messageRepository';
-import ConversationRepository from '../repositories/conversationRepository';
+import MessageRepository from '@/repositories/MessageRepository';
+import ConversationRepository from '@/repositories/ConversationRepository';
 
 class MessageController {
   async getMessagesByConversationId(req: Request, res: Response) {

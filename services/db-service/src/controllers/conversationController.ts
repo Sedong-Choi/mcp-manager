@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import ConversationRepository from '../repositories/conversationRepository';
+import ConversationRepository from '@/repositories/ConversationRepository';
 
 class ConversationController {
   async getAllConversations(req: Request, res: Response) {

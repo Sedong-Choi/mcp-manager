@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import { v4 as uuidv4 } from 'uuid';
-import { ModelConfig } from '../../../src/models/interfaces';
+import { ModelConfig } from '@//models/interfaces';
 
 // Mock data store
 let modelConfigsStore: Partial<ModelConfig>[] = [];
@@ -52,7 +52,7 @@ const mockDB = {
 };
 
 // Mock database
-jest.mock('../../../src/config/database', () => {
+jest.mock('@//config/database', () => {
   return jest.fn().mockImplementation(() => mockDB);
 });
 
@@ -62,7 +62,7 @@ jest.mock('uuid', () => ({
 }));
 
 // Import the app after mocking
-import app from '../../../src/app';
+import app from '@//app';
 const request = supertest(app);
 
 describe('Model Config API', () => {

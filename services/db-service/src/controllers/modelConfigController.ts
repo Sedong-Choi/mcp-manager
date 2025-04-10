@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import ModelConfigRepository from '../repositories/modelConfigRepository';
+import ModelConfigRepository from '@/repositories/ModelConfigRepository';
 
 class ModelConfigController {
   async getAllModelConfigs(req: Request, res: Response) {

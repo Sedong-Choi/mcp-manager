@@ -1,5 +1,5 @@
 import express from 'express';
-import ModelConfigController from '../controllers/modelConfigController';
+import ModelConfigController from '@/controllers/modelConfigController';
 
 const router:express.Router = express.Router();
 

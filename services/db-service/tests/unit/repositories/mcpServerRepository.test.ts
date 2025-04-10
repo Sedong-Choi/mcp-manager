@@ -1,8 +1,8 @@
-import { McpServerRepository } from '../../../src/repositories/mcpServerRepository';
-import { McpServer } from '../../../src/models/interfaces';
+import { McpServerRepository } from '@//repositories/mcpServerRepository';
+import { McpServer } from '@//models/interfaces';
 
 // Mock the database
-jest.mock('../../../src/config/database', () => {
+jest.mock('@//config/database', () => {
   return {
     __esModule: true,
     default: jest.fn().mockReturnValue({
@@ -17,7 +17,7 @@ jest.mock('../../../src/config/database', () => {
 });
 
 // Import the mocked database
-import db from '../../../src/config/database';
+import db from '@//config/database';
 
 // Mock UUID generation
 jest.mock('uuid', () => ({

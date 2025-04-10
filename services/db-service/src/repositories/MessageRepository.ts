@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import db from '../config/database';
-import { Message } from '../models/interfaces';
+import db from '@/config/database';
+import { Message } from '@/models/interfaces';
 
 export class MessageRepository {
   private tableName = 'messages';

@@ -1,5 +1,5 @@
 import express from 'express';
-import McpServerController from '../controllers/mcpServerController';
+import McpServerController from '@/controllers/mcpServerController';
 
 const router:express.Router = express.Router();
 

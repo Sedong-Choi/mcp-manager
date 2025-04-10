@@ -1,8 +1,8 @@
-import { ConversationRepository } from '../../../src/repositories/conversationRepository';
-import { Conversation } from '../../../src/models/interfaces';
+import { ConversationRepository } from '@/repositories/ConversationRepository';
+import { Conversation } from '@//models/interfaces';
 
 // Mock the database first, before using it
-jest.mock('../../../src/config/database', () => {
+jest.mock('@//config/database', () => {
   return {
     __esModule: true,
     default: jest.fn().mockReturnValue({
@@ -18,7 +18,7 @@ jest.mock('../../../src/config/database', () => {
 });
 
 // Import the mocked database
-import db from '../../../src/config/database';
+import db from '@//config/database';
 
 // Mock UUID generation
 jest.mock('uuid', () => ({

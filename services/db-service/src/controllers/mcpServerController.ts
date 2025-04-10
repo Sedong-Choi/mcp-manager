@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import McpServerRepository from '../repositories/mcpServerRepository';
+import McpServerRepository from '@/repositories/McpServerRepository';
 
 class McpServerController {
   async getAllMcpServers(req: Request, res: Response) {

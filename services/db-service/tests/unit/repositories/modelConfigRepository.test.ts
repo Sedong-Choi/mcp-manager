@@ -1,8 +1,8 @@
-import { ModelConfigRepository } from '../../../src/repositories/modelConfigRepository';
-import { ModelConfig } from '../../../src/models/interfaces';
+import { ModelConfigRepository } from '@//repositories/modelConfigRepository';
+import { ModelConfig } from '@//models/interfaces';
 
 // Mock the database first, before using it
-jest.mock('../../../src/config/database', () => {
+jest.mock('@//config/database', () => {
   return {
     __esModule: true,
     default: jest.fn().mockReturnValue({
@@ -17,7 +17,7 @@ jest.mock('../../../src/config/database', () => {
 });
 
 // Import the mocked database
-import db from '../../../src/config/database';
+import db from '@//config/database';
 
 // Mock UUID generation to be deterministic
 jest.mock('uuid', () => ({

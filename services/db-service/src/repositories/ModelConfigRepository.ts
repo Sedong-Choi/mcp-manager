@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import db from '../config/database';
-import { ModelConfig } from '../models/interfaces';
+import db from '@/config/database';
+import { ModelConfig } from '@/models/interfaces';
 
 export class ModelConfigRepository {
   private tableName = 'model_configs';
