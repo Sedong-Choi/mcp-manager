@@ -1,61 +1,75 @@
-version: '3.8'
+version: '3'
 
 services:
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./apps/web:/app
+      - /app/node_modules
+    depends_on:
+      - model-service
+      - mcp-service
+      - conversation-service
+      - db-service
+
   model-service:
     build:
-      context: .
-      dockerfile: ./services/model-service/Dockerfile.dev
+      context: ./services/model-service
+      dockerfile: Dockerfile.dev
     ports:
-      - "4001:4001"
+      - "3001:3001"
     environment:
-      - PORT=4001
       - NODE_ENV=development
     volumes:
       - ./services/model-service:/app
       - /app/node_modules
-    command: pnpm dev
 
   mcp-service:
     build:
-      context: .
-      dockerfile: ./services/mcp-service/Dockerfile.dev
+      context: ./services/mcp-service
+      dockerfile: Dockerfile.dev
     ports:
-      - "4002:4002"
+      - "3002:3002"
     environment:
-      - PORT=4002
       - NODE_ENV=development
     volumes:
       - ./services/mcp-service:/app
       - /app/node_modules
-    command: pnpm dev
+    depends_on:
+      - db-service
 
   conversation-service:
     build:
-      context: .
-      dockerfile: ./services/conversation-service/Dockerfile.dev
+      context: ./services/conversation-service
+      dockerfile: Dockerfile.dev
     ports:
-      - "4003:4003"
+      - "3003:3003"
     environment:
-      - PORT=4003
       - NODE_ENV=development
     volumes:
       - ./services/conversation-service:/app
       - /app/node_modules
-    command: pnpm dev
     depends_on:
       - db-service
 
   db-service:
     build:
-      context: .
-      dockerfile: ./services/db-service/Dockerfile.dev
+      context: ./services/db-service
+      dockerfile: Dockerfile.dev
     ports:
-      - "4004:4004"
+      - "3004:3004"
     environment:
-      - PORT=4004
       - NODE_ENV=development
     volumes:
       - ./services/db-service:/app
-      - ./data/db:/app/data/db
       - /app/node_modules
-    command: pnpm dev
+      - db-data:/app/data
+
+volumes:
+  db-data:
