@@ -1,29 +1,23 @@
 import { ModelConfigRepository } from '../../../src/repositories/modelConfigRepository';
 import { ModelConfig } from '../../../src/models/interfaces';
 
-// Mock DB 함수 타입
-type MockDB = jest.Mocked<{
-  (): {
-    select: jest.MockInstance<any, any>;
-    where: jest.MockInstance<any, any>;
-    first: jest.MockInstance<any, any>;
-    insert: jest.MockInstance<any, any>;
-    update: jest.MockInstance<any, any>;
-    del: jest.MockInstance<any, any>;
-  }
-}>;
+// Mock the database first, before using it
+jest.mock('../../../src/config/database', () => {
+  return {
+    __esModule: true,
+    default: jest.fn().mockReturnValue({
+      select: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      first: jest.fn(),
+      insert: jest.fn(),
+      update: jest.fn(),
+      del: jest.fn()
+    })
+  };
+});
 
-// Mock the database
-const mockDB = jest.fn().mockReturnValue({
-  select: jest.fn().mockReturnThis(),
-  where: jest.fn().mockReturnThis(),
-  first: jest.fn(),
-  insert: jest.fn(),
-  update: jest.fn(),
-  del: jest.fn()
-}) as MockDB;
-
-jest.mock('../../../src/config/database', () => mockDB);
+// Import the mocked database
+import db from '../../../src/config/database';
 
 describe('ModelConfigRepository', () => {
   let repository: ModelConfigRepository;
@@ -40,12 +34,12 @@ describe('ModelConfigRepository', () => {
         { id: '2', model_name: 'model2' }
       ];
       
-      mockDB().select.mockResolvedValueOnce(mockModels);
+      db().select.mockResolvedValueOnce(mockModels);
       
       const result = await repository.findAll();
       
-      expect(mockDB).toHaveBeenCalled();
-      expect(mockDB().select).toHaveBeenCalledWith('*');
+      expect(db).toHaveBeenCalled();
+      expect(db().select).toHaveBeenCalledWith('*');
       expect(result).toEqual(mockModels);
     });
   });
@@ -54,12 +48,12 @@ describe('ModelConfigRepository', () => {
     it('should return model config by id', async () => {
       const mockModel: Partial<ModelConfig> = { id: '1', model_name: 'model1' };
       
-      mockDB().first.mockResolvedValueOnce(mockModel);
+      db().first.mockResolvedValueOnce(mockModel);
       
       const result = await repository.findById('1');
       
-      expect(mockDB).toHaveBeenCalled();
-      expect(mockDB().where).toHaveBeenCalledWith({ id: '1' });
+      expect(db).toHaveBeenCalled();
+      expect(db().where).toHaveBeenCalledWith({ id: '1' });
       expect(result).toEqual(mockModel);
     });
   });

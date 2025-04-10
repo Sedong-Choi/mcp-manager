@@ -1,54 +1,57 @@
 import supertest from 'supertest';
-import { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
 import { ModelConfig } from '../../../src/models/interfaces';
 
-// 실제 앱 임포트 전에 DB를 모킹해야 합니다
-let db: Knex;
+// Mock data store
+let modelConfigsStore: Partial<ModelConfig>[] = [];
 
-// 모킹을 위한 함수
-function setupTestDB(): Knex {
-  const knex = require('knex');
-  return knex({
-    client: 'sqlite3',
-    connection: {
-      filename: ':memory:'
-    },
-    useNullAsDefault: true
-  });
-}
+// Mock database functions
+const mockDB = {
+  select: jest.fn().mockImplementation(() => mockDB),
+  where: jest.fn().mockImplementation(() => mockDB),
+  insert: jest.fn().mockImplementation((data) => {
+    if (Array.isArray(data)) {
+      modelConfigsStore.push(...data);
+    } else {
+      modelConfigsStore.push(data);
+    }
+    return Promise.resolve([data.id || '1']);
+  }),
+  update: jest.fn().mockImplementation((data) => {
+    const index = modelConfigsStore.findIndex(item => item.id === data.id);
+    if (index !== -1) {
+      modelConfigsStore[index] = { ...modelConfigsStore[index], ...data };
+    }
+    return Promise.resolve(1);
+  }),
+  del: jest.fn().mockImplementation(() => {
+    modelConfigsStore = [];
+    return Promise.resolve(modelConfigsStore.length);
+  }),
+  then: jest.fn().mockImplementation((callback) => {
+    return Promise.resolve(callback(modelConfigsStore));
+  })
+};
 
-// 테스트를 위한 데이터베이스 모킹
+// Mock database
 jest.mock('../../../src/config/database', () => {
-  db = setupTestDB();
-  return db;
+  return jest.fn().mockImplementation(() => mockDB);
 });
 
-// 앱이 DB 모킹 이후에 임포트되어야 합니다
+// Import the app after mocking
 import app from '../../../src/app';
 const request = supertest(app);
 
 describe('Model Config API', () => {
-  beforeAll(async () => {
-    // Set up test database schema
-    await db.schema.createTable('model_configs', (table) => {
-      table.string('id').primary();
-      table.string('model_name').notNullable().unique();
-      table.integer('api_port').notNullable();
-      table.string('status').notNullable().defaultTo('stopped');
-      table.timestamp('last_used').nullable();
-      table.timestamp('created_at').defaultTo(db.fn.now());
-      table.timestamp('updated_at').defaultTo(db.fn.now());
+  beforeEach(() => {
+    // Clear mock data and reset mock functions
+    modelConfigsStore = [];
+    jest.clearAllMocks();
+    
+    // Setup default implementation for select
+    mockDB.select.mockImplementation(() => {
+      return Promise.resolve(modelConfigsStore);
     });
-  });
-  
-  afterAll(async () => {
-    await db.schema.dropTable('model_configs');
-    await db.destroy();
-  });
-  
-  afterEach(async () => {
-    await db('model_configs').del();
   });
   
   describe('GET /model-configs', () => {
@@ -60,7 +63,7 @@ describe('Model Config API', () => {
     });
     
     it('should return all model configs', async () => {
-      // Insert test data
+      // Add test data to mock store
       const modelConfig: Partial<ModelConfig> = {
         id: uuidv4(),
         model_name: 'test-model',
@@ -70,7 +73,7 @@ describe('Model Config API', () => {
         updated_at: new Date().toISOString()
       };
       
-      await db('model_configs').insert(modelConfig);
+      modelConfigsStore.push(modelConfig);
       
       const response = await request.get('/model-configs');
       
