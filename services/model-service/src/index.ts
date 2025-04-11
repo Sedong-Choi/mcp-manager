@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { createApp } from '@/app';
+import { createApp } from './app';  // '@/app' 대신 상대 경로 사용
 
 // 환경 변수 로드
 dotenv.config();
