@@ -1,5 +1,4 @@
-// 모든 마이크로서비스에 적용될 공통 Jest 설정
-
+// Improved preset with better defaults
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
@@ -10,12 +9,22 @@ module.exports = {
     }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  testMatch: ['**/tests/**/*.test.ts'],
+  testMatch: ['**/src/**/*.test.ts', '**/tests/**/*.test.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    // Workspace mappings
+    '^@mcp/logger$': '<rootDir>/../logger/src/index.ts',
+    '^@mcp/ollama-utils$': '<rootDir>/../ollama-utils/src/index.ts'
   },
-  setupFilesAfterEnv: ['@mcp/test-config/dist/setupTests.js'],
+  // Use a default setup file from test-config, services can extend with their own
+  setupFilesAfterEnv: ['../..//packages/test-config/src/setupTests.ts'],
   clearMocks: true,
   resetMocks: false,
-  verbose: true
+  verbose: true,
+  testTimeout: 10000,
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/**/*.d.ts',
+  ],
+  coverageDirectory: 'coverage'
 };

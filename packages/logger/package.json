@@ -4,19 +4,31 @@
   "description": "Shared logging system for MCP Manager Pro",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "jest"
+    "lint": "eslint src --ext .ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "clean": "rimraf dist",
+    "pretest": "pnpm --filter @mcp/test-config build",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "winston": "^3.11.0"
   },
   "devDependencies": {
     "@mcp/tsconfig": "workspace:*",
+    "@mcp/test-config": "workspace:*",
     "@types/jest": "^29.x.x",
     "@types/node": "^20.x.x",
     "typescript": "^5.x.x",
-    "jest": "^29.x.x"
+    "jest": "^29.x.x",
+    "ts-jest": "^29.x.x",
+    "rimraf": "^5.0.0"
   }
 }

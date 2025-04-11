@@ -1,5 +1,5 @@
-import { ModelConfigRepository } from '@//repositories/modelConfigRepository';
-import { ModelConfig } from '@//models/interfaces';
+import { ModelConfigRepository } from '@/repositories/ModelConfigRepository';
+import { ModelConfig } from '@/models/interfaces';
 
 // Mock the database first, before using it
 jest.mock('@/database', () => {

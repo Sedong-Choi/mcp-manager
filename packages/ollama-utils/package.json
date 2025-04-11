@@ -5,18 +5,31 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "test": "jest"
+    "build": "npm run clean && npm run build:types && npm run build:js",
+    "build:js": "esbuild src/*.ts --bundle --platform=node --outdir=dist --format=cjs --external:@mcp/*",
+    "build:types": "tsc --project tsconfig.json --emitDeclarationOnly --declaration --outDir dist",
+    "clean": "rimraf dist",
+    "dev": "npm run build:types && npm run build:js -- --watch",
+    "lint": "eslint src --ext .ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "pretest": "pnpm --filter @mcp/logger build && pnpm --filter @mcp/test-config build",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "@mcp/logger": "workspace:*",
     "@mcp/tsconfig": "workspace:*"
   },
   "devDependencies": {
+    "@jest/globals": "^29.x.x",
+    "@mcp/test-config": "workspace:*",
     "@types/jest": "^29.x.x",
     "@types/node": "^20.x.x",
+    "esbuild": "^0.19.8",
     "typescript": "^5.x.x",
-    "jest": "^29.x.x"
+    "jest": "^29.x.x",
+    "ts-jest": "^29.x.x",
+    "rimraf": "^5.0.0"
   }
 }

@@ -1,27 +1,31 @@
 import supertest from 'supertest';
 import { v4 as uuidv4 } from 'uuid';
-import { ModelConfig } from '@//models/interfaces';
+import { ModelConfig } from '@/models/interfaces';
 
 // Mock data store
 let modelConfigsStore: Partial<ModelConfig>[] = [];
 
-// Mock database functions
+// Mock database functions - fix the chaining implementation
 const mockDB = {
-  select: jest.fn().mockImplementation(() => mockDB),
+  select: jest.fn().mockImplementation(() => {
+    // Fix the implementation to return the mockDB object for proper chaining
+    mockDB.chainResult = Promise.resolve(modelConfigsStore);
+    return mockDB;
+  }),
   where: jest.fn().mockImplementation((condition) => {
     // Support for where queries
     if (condition.id) {
-      mockDB.singleItem = modelConfigsStore.find(item => item.id === condition.id);
-    } else if (condition.model_name) {
-      mockDB.singleItem = modelConfigsStore.find(item => item.model_name === condition.model_name);
+      mockDB.currentId = condition.id;
     }
-    mockDB.currentId = condition.id;
     return mockDB;
   }),
   first: jest.fn().mockImplementation(() => {
     return Promise.resolve(mockDB.singleItem);
   }),
-  orderBy: jest.fn().mockImplementation(() => mockDB),
+  orderBy: jest.fn().mockImplementation(() => {
+    // Fix orderBy to return the mockDB object for proper chaining
+    return mockDB;
+  }),
   insert: jest.fn().mockImplementation((data) => {
     if (Array.isArray(data)) {
       modelConfigsStore.push(...data);
@@ -48,7 +52,8 @@ const mockDB = {
     return Promise.resolve(callback(modelConfigsStore));
   }),
   singleItem: null,
-  currentId: null
+  currentId: null,
+  chainResult: null
 };
 
 // Mock database
@@ -62,7 +67,7 @@ jest.mock('uuid', () => ({
 }));
 
 // Import the app after mocking
-import app from '@//app';
+import app from '@/app';
 const request = supertest(app);
 
 describe('Model Config API', () => {

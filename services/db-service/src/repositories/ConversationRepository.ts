@@ -6,13 +6,10 @@ export class ConversationRepository {
   private tableName = 'conversations';
 
   async findAll(): Promise<Conversation[]> {
-    const results = await db(this.tableName)
-      .select('*');
-    
-    // Sort in JavaScript instead of SQL
-    return results.sort((a, b) => 
-      new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-    );
+    // Use proper Knex.js chainable method for sorting
+    return db(this.tableName)
+      .select('*')
+      .orderBy('updated_at', 'desc');
   }
 
   async findById(id: string): Promise<Conversation | undefined> {

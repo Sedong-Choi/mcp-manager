@@ -2,12 +2,22 @@
   "name": "@mcp/test-config",
   "version": "1.0.0",
   "description": "Shared test configuration for MCP Manager Pro services",
-  "main": "jest.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "jest.js",
-    "setup.ts",
-    "utils.ts"
+    "dist",
+    "jest-preset.js"
   ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "clean": "rimraf dist",
+    "prepare": "npm run build"
+  },
   "peerDependencies": {
     "jest": ">=29.0.0",
     "ts-jest": ">=29.0.0",
@@ -20,6 +30,9 @@
     "@mcp/tsconfig": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.x.x"
+    "typescript": "^5.x.x",
+    "jest": "^29.x.x",
+    "ts-jest": "^29.x.x",
+    "rimraf": "^5.0.0"
   }
 }

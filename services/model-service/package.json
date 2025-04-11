@@ -7,7 +7,12 @@
     "build": "tsc --project tsconfig.json",
     "start": "node dist/index.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn src/index.ts",
-    "test": "jest --config jest.config.js"
+    "test": "jest --config ../../packages/test-config/jest.config.js",
+    "test:integration": "MOCK_OLLAMA=true jest --config jest.config.js --testMatch=\"**/tests/integration/**/*.test.ts\"",
+    "test:integration:real": "jest --config jest.config.js --testMatch=\"**/tests/integration/**/*.test.ts\"",
+    "pretest": "pnpm --filter @mcp/test-config build && pnpm --filter @mcp/logger build",
+    "test:watch": "jest --watch --config ../../packages/test-config/jest.config.js",
+    "test:coverage": "jest --coverage --config ../../packages/test-config/jest.config.js"
   },
   "dependencies": {
     "@mcp/logger": "workspace:*",
@@ -24,6 +29,7 @@
     "@types/express": "^4.x.x",
     "@types/jest": "^29.x.x",
     "jest": "^29.x.x",
+    "nock": "^13.x.x",
     "ts-jest": "^29.x.x",
     "ts-node": "^10.x.x",
     "ts-node-dev": "^2.x.x",

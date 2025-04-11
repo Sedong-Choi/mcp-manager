@@ -1,5 +1,5 @@
 import { ConversationRepository } from '@/repositories/ConversationRepository';
-import { Conversation } from '@//models/interfaces';
+import { Conversation } from '@/models/interfaces';
 
 // Mock the database first, before using it
 jest.mock('@/database', () => {
@@ -8,7 +8,10 @@ jest.mock('@/database', () => {
     default: jest.fn().mockReturnValue({
       select: jest.fn().mockReturnThis(),
       where: jest.fn().mockReturnThis(),
-      orderBy: jest.fn().mockReturnThis(), // Changed to mockReturnThis() for proper chaining
+      orderBy: jest.fn().mockImplementation(function() {
+        // Explicitly return this to ensure proper chaining
+        return this;
+      }),
       first: jest.fn(),
       insert: jest.fn(),
       update: jest.fn(),
@@ -40,7 +43,10 @@ describe('ConversationRepository', () => {
         { id: '2', title: 'Conversation 2', model_name: 'model2', updated_at: '2023-01-02T00:00:00Z' }
       ];
 
-      db().select.mockResolvedValueOnce(mockConversations);
+      // Update the mock to resolve after the chain
+      const mockDb = db();
+      mockDb.select.mockImplementation(() => mockDb);
+      mockDb.orderBy.mockResolvedValueOnce(mockConversations);
 
       const result = await repository.findAll();
 

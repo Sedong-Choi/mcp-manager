@@ -6,14 +6,11 @@ export class MessageRepository {
   private tableName = 'messages';
 
   async findByConversationId(conversationId: string): Promise<Message[]> {
-    const results = await db(this.tableName)
+    // Use proper Knex.js chainable method for sorting
+    return db(this.tableName)
       .where({ conversation_id: conversationId })
-      .select('*');
-    
-    // Sort in JavaScript instead of SQL
-    return results.sort((a, b) => 
-      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-    );
+      .select('*')
+      .orderBy('created_at', 'asc');
   }
 
   async findById(id: string): Promise<Message | undefined> {

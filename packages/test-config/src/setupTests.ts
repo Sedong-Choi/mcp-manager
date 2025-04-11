@@ -22,3 +22,9 @@ afterAll(() => {
 beforeAll(() => {
   console.log('테스트 시작: MCP 테스트 환경 설정 로드됨');
 });
+
+// Jest setup file
+// Add any global setup code for Jest here
+
+// Example: Mocking a global function
+// global.fetch = jest.fn();

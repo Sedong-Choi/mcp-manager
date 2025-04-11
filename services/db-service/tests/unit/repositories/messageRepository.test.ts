@@ -1,14 +1,17 @@
-import { MessageRepository } from '@//repositories/messageRepository';
-import { Message } from '@//models/interfaces';
+import { MessageRepository } from '@/repositories/MessageRepository';
+import { Message } from '@/models/interfaces';
 
-// Mock the database
+// Mock the database first, before using it
 jest.mock('@/database', () => {
   return {
     __esModule: true,
     default: jest.fn().mockReturnValue({
       select: jest.fn().mockReturnThis(),
       where: jest.fn().mockReturnThis(),
-      orderBy: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockImplementation(function() {
+        // Explicitly return this to ensure proper chaining
+        return this;
+      }),
       first: jest.fn(),
       insert: jest.fn(),
       update: jest.fn(),
@@ -20,7 +23,7 @@ jest.mock('@/database', () => {
 // Import the mocked database
 import db from '@/database';
 
-// Mock UUID generation
+// Mock UUID generation to be deterministic
 jest.mock('uuid', () => ({
   v4: jest.fn().mockReturnValue('mock-uuid-123')
 }));
@@ -52,7 +55,11 @@ describe('MessageRepository', () => {
         }
       ];
       
-      db().select.mockResolvedValueOnce(mockMessages);
+      // Update the mock to resolve after the chain
+      const mockDb = db();
+      mockDb.select.mockImplementation(() => mockDb);
+      mockDb.where.mockImplementation(() => mockDb);
+      mockDb.orderBy.mockResolvedValueOnce(mockMessages);
       
       const result = await repository.findByConversationId('conv-1');
       

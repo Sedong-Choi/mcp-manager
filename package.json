@@ -12,8 +12,19 @@
     "build": "pnpm -r build",
     "dev": "pnpm -r dev",
     "lint": "pnpm --filter=\"*\" run lint",
-    "test": "pnpm -r test",
-    "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules dist .next"
+    "test": "pnpm build:packages && pnpm --recursive test",
+    "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules dist .next",
+    "build:packages": "pnpm --filter \"./packages/**\" build",
+    "test:affected": "pnpm build:packages && pnpm --filter \"...[origin/main]\" test",
+    "pretest:services": "pnpm build:packages",
+    "test:services": "pnpm --filter \"./services/**\" test",
+    "test:model": "pnpm --filter model-service test",
+    "test:mcp": "pnpm --filter mcp-service test",
+    "test:conversation": "pnpm --filter conversation-service test",
+    "test:db": "pnpm --filter db-service test",
+    "test:packages": "pnpm --filter \"./packages/**\" test",
+    "test:all": "pnpm build:packages && pnpm test:packages && pnpm test:services",
+    "test:coverage": "pnpm --recursive exec -- jest --coverage"
   },
   "keywords": [
     "mcp",

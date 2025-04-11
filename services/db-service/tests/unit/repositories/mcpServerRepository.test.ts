@@ -1,5 +1,5 @@
-import { McpServerRepository } from '@//repositories/mcpServerRepository';
-import { McpServer } from '@//models/interfaces';
+import { McpServerRepository } from '@/repositories/McpServerRepository';
+import { McpServer } from '@/models/interfaces';
 
 // Mock the database
 jest.mock('@/database', () => {

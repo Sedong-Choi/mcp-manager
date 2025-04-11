@@ -1,7 +1,15 @@
 // Jest 설정 파일
 
+// Set environment to test
+process.env.NODE_ENV = 'test';
+
 // 전역 테스트 환경 설정
 jest.setTimeout(10000); // 테스트 타임아웃 설정 (10초)
+
+// Reset all mocks before each test
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 // 전역 특별 지시어
 /* eslint-disable-next-line no-console */
