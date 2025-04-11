@@ -18,16 +18,23 @@ describe('Ollama Integration Tests', () => {
     try {
       const response = await axios.get(`${MODEL_SERVICE_URL}/health/ollama`);
       expect(response.status).toBe(200);
-      expect(response.data.data.status).toBe('ok');
+      expect(response.data.status).toBe('ok');
     } catch (error) {
+      // Skip test if Ollama is not available
       if (error.code === 'ECONNREFUSED') {
-        // it('should retrieve model list from Ollama', async () => {
-        //   const response = await axios.get(`${MODEL_SERVICE_URL}/models`);
-        //   expect(response.status).toBe(200);
-        //   expect(response.data.data.models).toBeDefined();
-        //   expect(Array.isArray(response.data.data.models)).toBe(true);
-        // });
+        console.warn('Ollama API is not available, skipping test');
+      } else {
+        throw error;
       }
     }
-  })
+  });
+
+  // Commented out until API is fully implemented
+  // it('should retrieve model list from Ollama', async () => {
+  //   const response = await axios.get(`${MODEL_SERVICE_URL}/api/v1/models`);
+  //   expect(response.status).toBe(200);
+  //   expect(response.data.success).toBe(true);
+  //   expect(response.data.data.models).toBeDefined();
+  //   expect(Array.isArray(response.data.data.models)).toBe(true);
+  // });
 });

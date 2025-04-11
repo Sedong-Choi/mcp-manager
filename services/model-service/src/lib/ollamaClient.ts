@@ -12,7 +12,7 @@ import {
   HealthResponse
 } from '@/types/ollama';
 
-class OllamaClient {
+export class OllamaClient {
   private client: AxiosInstance;
   private retryCount: number = OLLAMA_API_RETRY_COUNT;
   private retryDelay: number = OLLAMA_API_RETRY_DELAY;
@@ -114,6 +114,32 @@ class OllamaClient {
       });
       return response.data as ModelInfoResponse;
     });
+  }
+
+  /**
+   * Check if a model is loaded in memory
+   * This is an approximation since Ollama doesn't have a direct way to check this
+   */
+  async checkModelLoaded(modelName: string): Promise<void> {
+    try {
+      // Make a minimal request to see if the model responds quickly
+      // If it does, it's likely loaded
+      await this.client.post('/api/generate', {
+        model: modelName,
+        prompt: "test",
+        stream: false,
+        options: {
+          num_predict: 1
+        }
+      }, {
+        timeout: 1000 // Short timeout - just to check if model responds quickly
+      });
+    } catch (error: any) {
+      if (error.response?.data?.error?.includes('not loaded')) {
+        throw new Error(`Model ${modelName} is not loaded`);
+      }
+      throw error;
+    }
   }
 }
 

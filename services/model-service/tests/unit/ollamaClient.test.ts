@@ -83,7 +83,10 @@ describe('OllamaClient', () => {
           name: modelName, 
           size: 1000, 
           modified_at: '2023-01-01', 
-          digest: 'abc123',
+          digest: 'sha256:abc123',
+          format: 'gguf',
+          family: 'llama',
+          quantization: 'Q4_0',
           details: {
             format: 'gguf',
             family: 'llama',

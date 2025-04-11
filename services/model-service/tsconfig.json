@@ -1,12 +1,12 @@
 {
-  "extends": "@mcp/tsconfig/service.json",
+  "extends": "../../packages/tsconfig/service.json",
   "compilerOptions": {
     "target": "es2022",
     "module": "commonjs",
     "lib": ["es2022"],
     "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./src",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -22,9 +22,10 @@
     "types": ["jest"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@/tests/*":["tests/*"],
     }
   },
-  "include": ["src/**/*", "tests/**/*"],
+  "include": ["src/**/*","tests/**/*"],
   "exclude": ["node_modules", "dist"]
 }

@@ -1,37 +1,38 @@
-import express, { Express } from 'express';
+/**
+ * Express application setup
+ */
+import express,{Express} from 'express';
 import cors from 'cors';
-import healthRoute from '@/routes/healthRoute';
-import { errorMiddleware } from '@/utils/errorHandler';
+import { OllamaClient } from './lib/ollamaClient';
+import { createHealthRouter } from './routes/healthRoute';
+import { ModelService } from './services/modelService';
+import { ModelController } from './controllers/modelController';
+import { createModelRouter } from './routes/modelRoutes';
 
-export function createApp(): Express {
-  const app = express();
+// Create express app
+const app:Express = express();
 
-  // 미들웨어 설정
-  app.use(cors());
-  app.use(express.json());
-  
-  // 요청 로깅
-  app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-    next();
+// Apply middleware
+app.use(cors());
+app.use(express.json());
+
+// Create clients and services
+const ollamaClient = new OllamaClient();
+const modelService = new ModelService(ollamaClient);
+const modelController = new ModelController(modelService);
+
+// Register routes
+app.use('/health', createHealthRouter(ollamaClient));
+app.use('/api/v1/models', createModelRouter(modelController));
+
+// Error handling middleware
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({
+    success: false,
+    error: 'Internal server error',
+    message: process.env.NODE_ENV === 'production' ? undefined : err.message
   });
+});
 
-  // 라우트 설정
-  app.use('/health', healthRoute);
-  
-  // 기본 404 핸들러
-  app.use((req, res) => {
-    res.status(404).json({ 
-      success: false,
-      data: {
-        error: 'Not Found',
-        path: req.path
-      }
-    });
-  });
-
-  // 글로벌 에러 핸들러
-  app.use(errorMiddleware);
-
-  return app;
-}
+export default app;
