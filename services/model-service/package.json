@@ -10,6 +10,8 @@
     "test": "jest --config jest.config.js"
   },
   "dependencies": {
+    "@mcp/logger": "workspace:*",
+    "@mcp/ollama-utils": "workspace:*",
     "axios": "^1.x.x",
     "cors": "^2.x.x",
     "dotenv": "^16.x.x",

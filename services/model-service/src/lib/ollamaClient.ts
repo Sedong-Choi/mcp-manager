@@ -97,6 +97,16 @@ export class OllamaClient {
       };
     }
   }
+  
+  // Simple ping to check if Ollama is available
+  async ping(): Promise<boolean> {
+    try {
+      await this.client.get('/api/tags');
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 
   // Get list of models
   async listModels(): Promise<ListModelsResponse> {

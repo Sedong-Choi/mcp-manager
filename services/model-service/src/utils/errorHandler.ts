@@ -1,32 +1,25 @@
+/**
+ * Error handling utilities
+ */
 import { Request, Response, NextFunction } from 'express';
 
-// 비동기 핸들러 래퍼
+// Async handler to catch exceptions in async route handlers
 export const asyncHandler = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-// 표준 API 응답 포맷팅
-export const apiResponse = (res: Response, data: any, statusCode = 200) => {
-  return res.status(statusCode).json({
-    success: statusCode >= 200 && statusCode < 300,
-    data
-  });
-};
-
-// 글로벌 에러 처리 미들웨어
+// Global error handler middleware
 export const errorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
-  const statusCode = err.status || 500;
+  console.error('Error:', err);
+  
+  const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
   
-  console.error(`[Error] ${message}`, err);
-  
-  return apiResponse(
-    res, 
-    { 
-      error: message,
-      status: 'error',
-      path: req.path 
-    }, 
-    statusCode
-  );
+  res.status(statusCode).json({
+    success: false,
+    error: {
+      message,
+      ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
+    }
+  });
 };

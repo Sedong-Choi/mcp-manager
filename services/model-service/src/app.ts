@@ -1,38 +1,34 @@
 /**
- * Express application setup
+ * Express app configuration
  */
-import express,{Express} from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
 import { OllamaClient } from './lib/ollamaClient';
-import { createHealthRouter } from './routes/healthRoute';
 import { ModelService } from './services/modelService';
 import { ModelController } from './controllers/modelController';
+import { createHealthRouter } from './routes/healthRoute';
 import { createModelRouter } from './routes/modelRoutes';
+import { errorMiddleware } from './utils/errorHandler';
 
-// Create express app
-const app:Express = express();
+export function createApp(): Express {
+  // Initialize dependencies
+  const ollamaClient = new OllamaClient();
+  const modelService = new ModelService(ollamaClient);
+  const modelController = new ModelController(modelService);
 
-// Apply middleware
-app.use(cors());
-app.use(express.json());
+  // Create Express app
+  const app = express();
 
-// Create clients and services
-const ollamaClient = new OllamaClient();
-const modelService = new ModelService(ollamaClient);
-const modelController = new ModelController(modelService);
+  // Middleware
+  app.use(cors());
+  app.use(express.json());
 
-// Register routes
-app.use('/health', createHealthRouter(ollamaClient));
-app.use('/api/v1/models', createModelRouter(modelController));
+  // Routes
+  app.use('/health', createHealthRouter(ollamaClient));
+  app.use('/api/v1/models', createModelRouter(modelController));
 
-// Error handling middleware
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Unhandled error:', err);
-  res.status(500).json({
-    success: false,
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'production' ? undefined : err.message
-  });
-});
+  // Error handling
+  app.use(errorMiddleware);
 
-export default app;
+  return app;
+}

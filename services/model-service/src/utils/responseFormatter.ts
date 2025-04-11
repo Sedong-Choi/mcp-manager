@@ -1,5 +1,5 @@
 /**
- * Standardized API response formatter
+ * Utilities for formatting API responses
  */
 
 export interface ApiResponse<T> {
@@ -9,26 +9,24 @@ export interface ApiResponse<T> {
   timestamp: string;
 }
 
-/**
- * Format a successful API response
- */
-export function successResponse<T>(data: T): ApiResponse<T> {
+// Standard success response format
+export const successResponse = (data: any = {}, message: string = 'Success') => {
   return {
     success: true,
+    message,
     data,
     timestamp: new Date().toISOString()
   };
-}
+};
 
-/**
- * Format an error API response
- */
-export function errorResponse(error: string | Error): ApiResponse<never> {
-  const errorMessage = error instanceof Error ? error.message : error;
+// Standard error response format
+export const errorResponse = (error: Error | string, statusCode: number = 500) => {
+  const message = typeof error === 'string' ? error : error.message;
   
   return {
     success: false,
-    error: errorMessage,
-    timestamp: new Date().toISOString()
+    message,
+    timestamp: new Date().toISOString(),
+    ...(process.env.NODE_ENV !== 'production' && typeof error !== 'string' && { stack: error.stack })
   };
-}
+};

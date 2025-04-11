@@ -1,12 +1,12 @@
 {
-  "extends": "../../packages/tsconfig/service.json",
+  "extends": "@mcp/tsconfig/service.json",
   "compilerOptions": {
     "target": "es2022",
     "module": "commonjs",
     "lib": ["es2022"],
     "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    // "rootDir": "./src",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,

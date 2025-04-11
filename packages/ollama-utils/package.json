@@ -1,0 +1,22 @@
+{
+  "name": "@mcp/ollama-utils",
+  "version": "1.0.0",
+  "description": "Ollama process management utilities for MCP Manager Pro",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@mcp/logger": "workspace:*",
+    "@mcp/tsconfig": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.x.x",
+    "@types/node": "^20.x.x",
+    "typescript": "^5.x.x",
+    "jest": "^29.x.x"
+  }
+}

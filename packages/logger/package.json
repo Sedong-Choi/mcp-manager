@@ -1,0 +1,22 @@
+{
+  "name": "@mcp/logger",
+  "version": "1.0.0",
+  "description": "Shared logging system for MCP Manager Pro",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest"
+  },
+  "dependencies": {
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@mcp/tsconfig": "workspace:*",
+    "@types/jest": "^29.x.x",
+    "@types/node": "^20.x.x",
+    "typescript": "^5.x.x",
+    "jest": "^29.x.x"
+  }
+}
