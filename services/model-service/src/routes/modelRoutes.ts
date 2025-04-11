@@ -1,21 +1,8 @@
-/**
- * Model API routes
- */
-import express, { Router } from 'express';
-import { ModelController } from '../controllers/modelController';
-import { asyncHandler } from '../utils/errorHandler';
+import { Router } from 'express';
+import { downloadModel } from '../controllers/modelController';
 
-export function createModelRouter(modelController: ModelController): Router {
-  const router = express.Router();
+const router = Router();
 
-  // Get all models
-  router.get('/', asyncHandler(modelController.getAllModels.bind(modelController)));
+router.post('/models/:modelName/download', downloadModel);
 
-  // Get model details by name
-  router.get('/:modelName', asyncHandler(modelController.getModelDetails.bind(modelController)));
-
-  // Get model status
-  router.get('/:modelName/status', asyncHandler(modelController.getModelStatus.bind(modelController)));
-
-  return router;
-}
+export default router;
