@@ -10,6 +10,10 @@ module.exports = {
       tsconfig: 'tsconfig.json',
     }],
   },
+  setupFilesAfterEnv:[
+    "<rootDir>/tests/setupJest.js",
+    "<rootDir>/tests/setupEnv.js",
+  ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },

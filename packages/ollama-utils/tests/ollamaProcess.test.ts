@@ -2,7 +2,14 @@ import ollamaProcess, { OllamaProcess } from '../src/ollamaProcess';
 import * as childProcess from 'child_process';
 import { createLogger } from '@mcp/logger';
 
-// Mock the logger to prevent console output during tests
+// Declare mockChildProcess first without initialization
+let mockChildProcess: any;
+
+// Set up mocks (these get hoisted to top)
+jest.mock('child_process', () => ({
+  spawn: jest.fn(() => mockChildProcess)
+}));
+
 jest.mock('@mcp/logger', () => ({
   createLogger: jest.fn().mockReturnValue({
     info: jest.fn(),
@@ -11,8 +18,8 @@ jest.mock('@mcp/logger', () => ({
   })
 }));
 
-// Setup mock for child_process.spawn
-const mockChildProcess = {
+// Initialize mockChildProcess after jest.mock
+mockChildProcess = {
   stdout: {
     on: jest.fn()
   },
@@ -23,11 +30,6 @@ const mockChildProcess = {
   kill: jest.fn()
 };
 
-jest.mock('child_process', () => ({
-  spawn: jest.fn().mockReturnValue(mockChildProcess)
-}));
-
-// Get access to the mocked function
 const spawnMock = childProcess.spawn as jest.MockedFunction<typeof childProcess.spawn>;
 
 describe('OllamaProcess', () => {
