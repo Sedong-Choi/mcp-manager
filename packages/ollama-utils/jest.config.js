@@ -1,6 +1,6 @@
 /** @type {import('jest').Config} */
 module.exports = {
-  preset: '@mcp/test-config/jest-preset',
+  preset: '@mcp/test-config',
   testEnvironment: 'node',
   roots: ['<rootDir>/src/', '<rootDir>/tests/'],
   testMatch: ['**/tests/**/*.test.ts'],
@@ -10,7 +10,6 @@ module.exports = {
       tsconfig: 'tsconfig.json',
     }],
   },
-  setupFilesAfterEnv: ['<rootDir>/tests/setupJest.js'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },

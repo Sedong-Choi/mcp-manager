@@ -21,6 +21,7 @@
     "uuid": "^9.x.x"
   },
   "devDependencies": {
+    "@mcp/test-config": "workspace:*",
     "@mcp/tsconfig": "workspace:*",
     "@types/better-sqlite3": "^7.x.x",
     "@types/express": "^4.x.x",

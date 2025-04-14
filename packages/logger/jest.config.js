@@ -1,6 +1,6 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-  preset: '@mcp/test-config/jest-preset',
+  preset: '@mcp/test-config',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
@@ -17,6 +17,5 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   verbose: true,
-  testTimeout: 10000,
-  setupFilesAfterEnv: ['<rootDir>/tests/setupTest.js'],
+  testTimeout: 10000
 };

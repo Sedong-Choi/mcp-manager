@@ -17,7 +17,7 @@ module.exports = {
     '^@mcp/ollama-utils$': '<rootDir>/../ollama-utils/src/index.ts'
   },
   // Use a default setup file from test-config, services can extend with their own
-  setupFilesAfterEnv: ['../..//packages/test-config/src/setupTests.ts'],
+  setupFilesAfterEnv: ['<rootDir>/node_modules/@mcp/test-config/src/setupTests.ts'],
   clearMocks: true,
   resetMocks: false,
   verbose: true,

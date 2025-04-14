@@ -11,7 +11,7 @@ module.exports = {
       tsconfig: '<rootDir>/tsconfig.json',
     }],
   },
-  setupFilesAfterEnv: ['<rootDir>/../../packages/test-config/src/setupTests.ts'],
+  setupFilesAfterEnv: ['<rootDir>/node_modules/@mcp/test-config/src/setupTests.ts'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/**/*.d.ts',

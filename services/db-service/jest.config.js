@@ -12,7 +12,7 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  setupFilesAfterEnv: ['<rootDir>/../../packages/test-config/src/setupTests.ts'],
+  setupFilesAfterEnv: ['<rootDir>/node_modules/@mcp/test-config/src/setupTests.ts'],
   testMatch: ['**/tests/**/*.test.ts'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
