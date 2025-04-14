@@ -15,7 +15,7 @@ export class ModelService {
     try {
       const { stdout } = await execPromise(`ollama pull ${modelName}`);
       return stdout;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(`Failed to download model: ${error.message}`);
     }
   }
@@ -28,8 +28,8 @@ export class ModelService {
       // Then make a minimal request to load the model
       // Ollama loads models on first use, so we send a minimal request
       const { stdout } = await execPromise(`ollama run ${modelName} "exit" --verbose`);
-      return `Model ${modelName} loaded successfully`;
-    } catch (error) {
+      return `${modelName} loaded successfully`;
+    } catch (error: any) {
       throw new Error(`Failed to load model: ${error.message}`);
     }
   }
@@ -42,8 +42,8 @@ export class ModelService {
       // Currently Ollama doesn't have a direct API for unloading models
       // In real implementation, this would call the Ollama API when available
       const { stdout } = await execPromise(`pkill -f "ollama run ${modelName}"`);
-      return `Model ${modelName} unloaded successfully`;
-    } catch (error) {
+      return `${modelName} unloaded successfully`;
+    } catch (error: any) {
       // pkill returns non-zero exit code if no processes found, which isn't an error for us
       if (error.code === 1) {
         return `No running instances of model ${modelName} found`;
@@ -56,7 +56,7 @@ export class ModelService {
     try {
       await this.ollamaClient.checkModelLoaded(modelName);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       return false;
     }
   }

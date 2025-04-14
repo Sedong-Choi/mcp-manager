@@ -1,15 +1,22 @@
-// This is a suggestion if you need to adjust the database configuration
-
-import knex from 'knex';
+import Knex from 'knex';
 import config from '../knexfile';
 
-// 환경 변수에 따른 설정 사용
-const environment = process.env.NODE_ENV || 'development';
-const db = knex(config[environment]);
+type Environment = keyof typeof config; // 'development' | 'test' | 'production'
 
-// 외래 키 제약 조건 활성화 (SQLite 특성 상 별도 설정 필요)
-db.raw('PRAGMA foreign_keys = ON;').catch(error => {
-  console.error('외래 키 제약 조건 활성화 오류:', error);
-});
+const env = process.env.NODE_ENV;
+let environment: Environment;
+
+if (env === 'development' || env === 'test' || env === 'production') {
+  environment = env;
+} else {
+  console.warn(`Invalid NODE_ENV: ${env}. Defaulting to 'development'.`);
+  environment = 'development';
+  // 또는 오류를 발생시킬 수도 있습니다:
+  // throw new Error(`Invalid NODE_ENV: ${env}`); 
+}
+
+const knexConfig = config[environment]; // 이제 안전하게 접근 가능
+
+const db = Knex(knexConfig);
 
 export default db;
